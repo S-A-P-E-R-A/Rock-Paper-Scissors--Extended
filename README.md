@@ -31,7 +31,6 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
   )  #will remove for anti-buggy edition
   NormalOptions = ["rock", "paper", "scissors"]
   #Used so stRings can print duRing production
-  # To insert variables, add an f"" before the quotation marks and put the variable in {curly brackets}
 
   time.sleep(3)
   RoboNames = [
