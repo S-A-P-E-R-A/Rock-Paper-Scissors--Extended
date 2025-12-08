@@ -151,8 +151,8 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
   time.sleep(3)
   RoboNames = [
       "Megatron", "R2D2", "C3PO", "Wall-E", "Spongebob", "10101010010",
-      "001101110010101", "Optamous Prime", "Bumblebee", "Megatron", "Megatron",
-      "Megatron", "Megatron", "Megatron", "Megatron", "Megatron"
+      "001101110010101", "Optimus Prime", "Bumblebee", "Megatron", "Megatron",
+      "Megatron", "Megatron", "Megatron", "Megatron", "Megatron", "BB8", "T-800", "T-1000", "Ultron", "Baymax", "JARVIS", "RoboCop", "Iron Giant"
   ]
   RoboInfo = {
       "RoboName": random.choice(RoboNames),
@@ -374,7 +374,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
   RoboNames = [
       "Megatron", "R2D2", "C3PO", "Wall-E", "Spongebob", "10101010010",
       "001101110010101", "Optamous Prime", "Bumblebee", "Megatron", "Megatron",
-      "Megatron", "Megatron", "Megatron"
+      "Megatron", "Megatron", "Megatron", "BB8", "T-800", "T-1000", "Ultron", "Baymax", "JARVIS", "RoboCop", "Iron Giant"
   ]
   RoboInfo = {
       "RoboName": random.choice(RoboNames),
