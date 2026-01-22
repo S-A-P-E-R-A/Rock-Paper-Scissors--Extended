@@ -4,20 +4,122 @@ import random
 
 comments = []
 
+class Module():
+    def __init__(self, roundsPlayed, name = "None", opponentInfo = {"None"}, points = 0, goalpoints = 0, mode = "None", modeList = ["None"]):
+        self.name = name
+        self.points = points
+        self.goalpoints = goalpoints
+        self.rounds = round((goalpoints / 100) * 1.85)
+        self.opponentInfo = opponentInfo
+        self.mode = mode
+        self.modeList = modeList
+        self.roundsPlayed = roundsPlayed
+        self.comments = []
+
+    def update(self, points, goalpoints, opponentInfo, roundsPlayed):
+        self.points = points
+        self.goalpoints = goalpoints
+        self.opponentInfo = opponentInfo
+        self.roundsPlayed = roundsPlayed
+    
+    def viewSelf(self):
+        print(f"\nName: {self.name}")
+        print(f"Points: {self.points}")
+        print(f"Goal Points: {self.goalpoints}\n")
+        time.sleep(3.4)
+        
+    def viewOpponent(self):
+        print(f"\nName: {self.opponentInfo['RoboName']}")
+        print(f"Points: {self.opponentInfo['RoboPoints']}")
+        print(f"Goal Points: {self.opponentInfo['RoboGoalPoints']}\n")   
+        time.sleep(3.4)
+    
+    def prompt(self):
+        self.dismiss = False
+        os.system('clear')
+        color("blue", "i")
+        print("TYPO DETECTED: WELCOME TO TERMINUS\n\n")
+        time.sleep(3)
+        self.viewOptions()
+        while not self.dismiss:
+            color("green", "b")
+            self.ans = input("\n\nWhat do you want to view? \n\t")
+            color("yellow", "u")
+            if str.lower(self.ans) == "comment":
+                self.comment = input("What is your comment?\n\t")
+                self.comments.append(self.comment)
+            elif str.lower(self.ans) == "my_info":
+                self.viewSelf()
+            elif str.lower(self.ans) == "robot_info":
+                self.viewOpponent()
+            elif str.lower(self.ans) == "game_info":
+                self.viewGame()
+            elif str.lower(self.ans) == "im a cheater :)":
+                self.viewCheats()
+            elif str.lower(self.ans) == "options":
+                self.viewOptions()
+            elif str.lower(self.ans) == "past_games":
+                self.viewPast()
+            elif str.lower(self.ans) == "end_game":
+                self.endGame()
+            else:
+                print("ERROR - NOT AN OPTION\n\n")
+                time.sleep(2)
+
+            color("red","i")
+            self.answer = input("\n\nDone viewing Terminus?\n")
+            if str.lower(self.answer) == "yes":
+                self.dismiss = True
+            else:
+                print("\nSay 'yes' to exit")
+                time.sleep(2)
+            
+    def viewGame(self):
+        print(f"\nGame Mode: {self.mode}")
+        print(f"Rounds: {self.rounds}")
+        self.viewSelf()
+        self.viewOpponent()
+        time.sleep(3.4)
+        
+    def viewCheats(self):
+        self.ask = input("\nAre you SUUUUUUUUUUUUUUREEEEE you want to see the cheats?\n\t")
+        if str.lower(self.ask) == "yes":
+            color("red")
+            print("Here are the cheats, cheater:")
+            for i in self.modeList:
+                print(f"{i}", end = " -> ")
+            time.sleep(3)
+            print(f"{self.modeList[0]}\nBye.")
+        else:
+            print("THATS NOT YES SO BYE!")
+            time.sleep(2)
+            
+    def viewOptions(self):
+        color("blue", "i")
+        print(f"\nYou can:\n\tAdd in a comment\t\t\t\t'comment'\n\tView your information\t\t\t'my_info'\n\tView opponent's information\t\t'robot_info'\n\tView game information\t\t\t'game_info'\n\tView cheats\t\t\t\t\t\t'im a cheater :)'\n\tView past games\t\t\t\t\t'past_games'\n\tEnd the game\t\t\t\t\t'END_GAME'")
+        time.sleep(3)
+
+    def viewPast(self):
+        look = input("Would you like to see past games?    ('yes' or 'no')\n\t")
+        if str.lower(look) == "yes":
+            try:
+                file = open("Realm.txt", "r")
+                color("purple")
+                print(file.read())
+            except FileNotFoundError:
+                print("There are no past games")
+
+    def endGame(self):
+        self.ask = input("Are you sure you want to end the game?\n\t")
+        if str.lower(self.ask) == "yes":
+            CreatEntry(self.goalpoints, self.points, self.opponentInfo["RoboName"], self.opponentInfo["RoboGoalPoints"], self.roundsPlayed, self.opponentInfo["RoboPoints"], "quit", self.comments, self.mode)
+            exit()
+        time.sleep(2)
+
 endgame = "Unknown"
-look = input("Would you like to see past games?    (yes or no)\n\t")
-if str.lower(look) == "yes":
-    try:
-        file = open("Realm.txt", "r")
-        print(file.read())
-        exit()
-    except FileNotFoundError:
-        print("There are no past games")
-        exit()
+
 def color(color="reset", format="none"):
-  print(" ")  #remove for color
-  pass  #remove for color
-  """  remove for color
+ 
   print("\033[0m")
   if str.lower(color) == "yellow":
     print("\033[33m")
@@ -47,8 +149,8 @@ def color(color="reset", format="none"):
     pass
   else:
     print("\033[0m")
-"""  #remove for color
-    
+
+
 bait = [
     "mickey mouse", "hulk", "jake the dog", "spider man", 'donald duck', 'daffy duck', 'wood pickaxe', 'netherite pickaxe', 'java', 'python', 'shopping cart', 'corvette', 'trash can', "batman", "tung tung tung sahour", "golden knight", "rey skywalker", "voldemort", "super man", "kryptonite", "dirt", "diamonds", "pneumonoultramicroscopicsilicovolcanoconiosis", "doctor strange", "bombadiro krokadiro", "lockheed martin f-35 lightning", "apple", 'gold bar'
 ]
@@ -92,27 +194,13 @@ PlayerSettings = {
     "Rounds": round((pointvaluegoal / 100) * 1.85),
     "name": Name
 }
+time.sleep(1.3)
+os.system('clear')
 color("green","b")
-print("LOADING:\nFun Fact! You can make a comment at any time you can input a value!\n")
+print("LOADING:\nFun Fact! You can access the Terminus at any time! Just ask!\t(Starting Now)\n")
 time.sleep(5)
 
 
-
-
-def Comment(comment):
-    choice = input("ERROR DETECTED:\n\tis that a typo or a comment?\n\t")
-    if str.lower(choice) == "comment":
-        print("Okay, we'll keep note of it") #Says they will note the comment
-        comments.append(comment)
-    elif str.lower(choice) == "typo":
-        print("You need to practice you english.") #Acknowledges the typo
-    else:
-        print(f"...What is '{choice}' supposed to mean?")#Says something mean (nothing else happens)
-    time.sleep(2)
-    print("now RESTART!")# Says it will restart
-    time.sleep(2)
-
-        
 def CreatEntry(goalpoints, points, robot, robgoal, rounds, robpoints, endgame, comments, gameMode):
     while True:
         try: 
@@ -134,8 +222,8 @@ def CreatEntry(goalpoints, points, robot, robgoal, rounds, robpoints, endgame, c
     for i in comments:
         file.write(f"\nComment {var}: \n\t{i}")
         var += 1
-    print("\n\n\n")
-        
+    print("\n\nGAME DOCUMENTED\n")
+
 
 
 
@@ -189,10 +277,12 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
 
   #Rounds so it cannot be endless
   rounds += 1
-  while (points > 0) and (points < goalpoints) and (rounds > 1):
+  while (points > 0) and (points < goalpoints) and (rounds > 0):
     color("blue","u")
     RoboInfo["RoboBet"] = 0
     rounds -= 1
+    Terminus.update(points, goalpoints, RoboInfo, (rounds-(round((goalpoints / 100) * 1.8))))
+    print("GAME SAVED")
     time.sleep(2)
     os.system('clear')
     print(f"This is what your current points, {points}, looks like")
@@ -206,6 +296,7 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
     )
     time.sleep(3)
     robo = random.choice(NormalOptions)
+    RoboInfo["RoboBet"] += 1
     for i in range(RoboInfo["RoboPoints"]):
       chance = random.randint(1, 2)
       if chance == 1:
@@ -237,7 +328,7 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
                 continue
             else:
                 color("red")
-                Comment(confirmation)
+                Terminus.prompt()
                 time.sleep(1)
                 rounds += 1
                 continue
@@ -249,7 +340,7 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
             time.sleep(5)
             continue
     except ValueError:
-        Comment(bet)
+        Terminus.prompt()
         time.sleep(2)
         rounds += 1
         continue
@@ -295,7 +386,7 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
       print(
           "Okay, okay, no need to brag about this victory, get your double pointvalue and get out of here. You are indeed, one lucky duck"
       )
-      points += (bet * 2)
+      points += (bet * 2) + RoboInfo["RoboBet"]
       time.sleep(3)
       continue
     elif (str.lower(RPS) == "rock" and robo == "paper") or (
@@ -306,54 +397,59 @@ def NormalMode(points, goalpoints, rounds, name="MegaMind"):
       print(
           "HAHAH, you must have lost all of your luck, according to my calculations, you have lost points…"
       )
-      RoboInfo["RoboPoints"] += (RoboInfo["RoboBet"] * 2)
+      RoboInfo["RoboPoints"] += (RoboInfo["RoboBet"] * 2) + bet
       time.sleep(3)
       continue
     else:
       color("red", "b")
-      Comment(RPS)
+      Terminus.prompt()
       points += bet
       RoboInfo["RoboPoints"] += RoboInfo["RoboBet"]
       rounds += 1
       continue
 
-  else:
-    if (points <= 0) or (rounds == 0):
-      color("gray", "b")
-      print(
-          f"Yikes, {name} you are not doing so well, you have lost to {RoboInfo['RoboName']}…try again?"
-      )
-      time.sleep(3)
-      if points <= 0:
-        endgame = "Bankruptcy" # says they went bankrupt
-        CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
-      elif rounds == 0:
-        endgame = "Ran out of Time" #says they ran out of time
-        CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
-      exit()
-    elif RoboInfo["RoboGoalPoints"] <= RoboInfo["RoboPoints"]:
-      color("red", "u")
-      endgame = f"{RoboInfo['RoboName']} reached their goal"
-      print("HAHAH it looks like you lost…to a robot, what a loser."
-            )  # Says that the computer has won
+  if (points <= 0) or (rounds <= 0):
+    color("gray", "b")
+    print(
+        f"Yikes, {name} you are not doing so well, you have lost to {RoboInfo['RoboName']}…try again?"
+    )
+    time.sleep(3)
+      
+    if points <= 0:
+      endgame = "Bankruptcy" # says they went bankrupt
       CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
-      time.sleep(3)
       exit()
-    elif points >= goalpoints:
-      color("green", "b")
-      endgame = f"{PlayerSettings['name']} reached their goal"
-      print(f"{name}, good job, you have won!")
+        
+    elif rounds <= 0:
+      endgame = "Ran out of Time" #says they ran out of time
       CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
-      time.sleep(3)
-      exit()
-    elif RoboInfo["RoboPoints"] <= 0:
-      color("blue", "u")
-      endgame = f"{RoboInfo['RoboName']} Bankruptcy"
-      print("Phew, what a game, it looks like you have won…Congrats!"
-            )  #Says that the computer has lost
-      CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
-      time.sleep(3)
-      exit()
+    exit()
+      
+  elif RoboInfo["RoboGoalPoints"] <= RoboInfo["RoboPoints"]:
+    color("red", "u")
+    endgame = f"{RoboInfo['RoboName']} reached their goal"
+    print("HAHAH it looks like you lost…to a robot, what a loser."
+          )  # Says that the computer has won
+    CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
+    time.sleep(3)
+    exit()
+      
+  elif points >= goalpoints:
+    color("green", "b")
+    endgame = f"{PlayerSettings['name']} reached their goal"
+    print(f"{name}, good job, you have won!")
+    CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
+    time.sleep(3)
+    exit()
+      
+  elif RoboInfo["RoboPoints"] <= 0:
+    color("blue", "u")
+    endgame = f"{RoboInfo['RoboName']} Bankruptcy"
+    print("Phew, what a game, it looks like you have won…Congrats!"
+          )  #Says that the computer has lost
+    CreatEntry(goalpoints, points, RoboInfo["RoboName"], RoboInfo["RoboGoalPoints"], -(rounds-(round((goalpoints / 100) * 1.8))), RoboInfo["RoboPoints"], endgame, comments, gameMode)
+    time.sleep(3)
+    exit()
 
 
 
@@ -411,7 +507,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
   print(f"{RoboInfo['RoboName']} is your opponent, they have {RoboInfo['RoboPoints']} points")
   time.sleep(4)
 
-  while (points > 0) and (points < goalpoints) and (rounds > 1) and (
+  while (points > 0) and (points < goalpoints) and (rounds > 0) and (
       RoboInfo["RoboGoalPoints"]
       > RoboInfo["RoboPoints"]) and (RoboInfo["RoboPoints"] > 0):
     for i in range(len(mode)):
@@ -419,16 +515,16 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
     RoboInfo["RoboBet"] = 0
     rounds -= 1
     time.sleep(2)
+    Terminus.update(points, goalpoints, RoboInfo, (rounds-(round((goalpoints / 100) * 1.8))))
+    print("GAME SAVED")
+    time.sleep(2)
     os.system('clear')
     color("blue","u")
-    print(f"This is what your current points, {points}, looks like")
-    time.sleep(2.5)
-    print(f"Your goal is {goalpoints}, try not to go down")
-    time.sleep(2.5)
+    Terminus.viewSelf()
     print(f"It looks like you have been playing for {-(rounds-(round((goalpoints / 100) * 1.8)))} round(s), you have {rounds} round(s) left")
-    print(f"{RoboInfo['RoboName']} has {RoboInfo['RoboPoints']} points")
-    time.sleep(3)
+    Terminus.viewOpponent()
     robo = random.choice(list(Ring.keys()))
+    RoboInfo["RoboBet"] += 1
     for i in range(RoboInfo["RoboPoints"]):
       chance = random.randint(1, 2)
       if chance == 1:
@@ -464,7 +560,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
                 continue
             else:
                 color("red")
-                Comment(confirmation)
+                Terminus.prompt()
                 time.sleep(1)
                 rounds += 1
                 continue
@@ -476,7 +572,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
             rounds += 1
             continue
     except ValueError:
-        Comment(bet)
+        Terminus.prompt()
         time.sleep(1)
         rounds += 1
         continue
@@ -506,7 +602,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
     time.sleep(3)
     if str.lower(choice) not in Ring:
       color("red", "b")
-      Comment(choice)
+      Terminus.prompt()
       rounds += 1
       points += bet
       RoboInfo["RoboPoints"] += RoboInfo["RoboBet"]
@@ -518,7 +614,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
       print(
           "Wow, wow, wow, it looks like we have a lucky duck. Congrats on winning the round!"
       )
-      points += (bet * 2)
+      points += (bet * 2) + RoboInfo["RoboBet"]
       time.sleep(3)
       continue
     elif (Ring[str.lower(choice)] - Ring[robo] == 1) or (Ring[str.lower(choice)] - Ring[robo] == -(len(Ring) - 1)):
@@ -526,7 +622,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
       print(
           "Whoopsies, it looks like you lost your winning streak, if you had one HAHA. We know how unlucky you are, try again…"
       )  #Says that the player has lost
-      RoboInfo["RoboPoints"] += (RoboInfo["RoboBet"] * 2)
+      RoboInfo["RoboPoints"] += (RoboInfo["RoboBet"] * 2) + bet
       time.sleep(3)
       continue
     else:
@@ -540,7 +636,7 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
         time.sleep(3)
         continue
   else:
-    if (points <= 0) or (rounds == 0):
+    if (points <= 0) or (rounds <= 0):
       color("gray", "b")
       print(
           f"Yikes, {name} you are not doing so well, you have lost to {RoboInfo['RoboName']}…try again?"
@@ -577,9 +673,17 @@ def FunMode(points, goalpoints, rounds, ModeName, mode, name="MegaMind"):
       exit()
 
 
+
+
+
+
+RoboInfo = None
 if str.lower(gameMode) == "normal":
+  mode = ["scissors", "paper", "rock"]
+  Terminus = Module(0, PlayerSettings["name"], RoboInfo, PlayerSettings["Points"], PlayerSettings["GoalPoints"], gameMode, mode)
   NormalMode(PlayerSettings["Points"], PlayerSettings["GoalPoints"],
              PlayerSettings["Rounds"], PlayerSettings["name"])
+  exit()
 elif str.lower(gameMode) == "cars":
   for a in car:
     mode.append(a)
@@ -599,5 +703,6 @@ else:
   )  #Says that is not an option and now we restart
   time.sleep(3)
   exit()
+Terminus = Module(0, PlayerSettings["name"], RoboInfo, PlayerSettings["Points"], PlayerSettings["GoalPoints"], gameMode, mode)
 FunMode(PlayerSettings["Points"], PlayerSettings["GoalPoints"],
         PlayerSettings["Rounds"], gameMode, mode, PlayerSettings["name"])
