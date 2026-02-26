@@ -16,7 +16,7 @@ class Game():
       self.opponent = Opp("Haltmann", 0, 400)
       self.confirmation = ["yes", "yea", "y", "yep", "yup", "yeah", "yessir", "yessirree", "sure", "ok", "okay", "ya", "yah", "yuh"]
       self.bait = [
-          "mickey mouse", "hulk", "jake the dog", "spider man", 'donald duck', 'daffy duck', 'wood pickaxe', 'netherite pickaxe', 'java', 'python', 'shopping cart', 'corvette', 'trash can', "batman", "tung tung tung sahour", "golden knight", "rey skywalker", "voldemort", "super man", "kryptonite", "dirt", "diamonds", "pneumonoultramicroscopicsilicovolcanoconiosis", "doctor strange", "bombadiro krokadiro", "lockheed martin f-35 lightning", "apple", 'gold bar'
+          "mickey mouse", "hulk", "jake the dog", "spiderman", 'donald duck', 'daffy duck', 'wood pickaxe', 'netherite pickaxe', 'java', 'python', 'shopping cart', 'corvette', 'trash can', "batman", "tung tung tung sahour", "golden knight", "rey skywalker", "voldemort", "superman", "kryptonite", "dirt", "diamonds", "pneumonoultramicroscopicsilicovolcanoconiosis", "doctor strange", "bombadiro krokadiro", "lockheed martin f-35 lightning", "apple", 'gold bar'
       ]
       self.car = [
           "gtr nismo 2020", "dodge charger", "f150", "silverado", "dodge viper",
