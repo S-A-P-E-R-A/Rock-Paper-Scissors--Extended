@@ -31,7 +31,7 @@ class Game():
       ]
       self.comic = [
           "batman", "superman","joker", "spiderman",
-          "cyborg", "iron man", "green lanter", "alfred", "happy",
+          "cyborg", "ironman", "green lantern", "alfred", "happy",
           "bruce banner", "hulk", "bruce wayne", "tony stark",
           "infinity gauntlet"
       ]
