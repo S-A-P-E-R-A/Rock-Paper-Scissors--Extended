@@ -30,7 +30,7 @@ class Game():
           "hiroshi yamauchi"
       ]
       self.comic = [
-          "batman with planning time", "superman","joker", "spiderman",
+          "batman", "superman","joker", "spiderman",
           "cyborg", "iron man", "green lanter", "alfred", "happy",
           "bruce banner", "hulk", "bruce wayne", "tony stark",
           "infinity gauntlet"
