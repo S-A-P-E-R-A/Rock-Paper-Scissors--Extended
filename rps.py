@@ -15,7 +15,7 @@ class Game():
       self.totalRounds = 0
       self.poke = False
       self.pastGame = False
-
+      self.chance = True
       self.pin = 0
       self.mode = "none"
       self.player = Player("MegaMind", 0, 0)
@@ -44,6 +44,8 @@ class Game():
           "infinity gauntlet"
       ]
       self.norm = ["scissors", "paper", "rock"]
+
+      self.RPSLS = ["rock", "paper", "scissors", "lizard", "spock"] #ADDITION
 
       self.pokemon = ["fire", "water", "electricity", "grass", "dragon", "fairy", "rock", "ground", "ice", "steel", "dark", "ghost", "fighting", "bug", "flying", "poison", "psychic"]
   def pokeCheck(self, player, robo):
@@ -89,6 +91,10 @@ class Game():
     elif choice == "POKEMON\n" or choice == "POKEMON":
         self.poke = True
         return self.pokemon
+    elif choice == "LEVEL TWO ROCK PAPER SCISSORS" or choice == "LEVEL TWO ROCK PAPER SCISSORS\n": #ADDITION
+        self.dynamic = True
+        self.dynamics = {"rock" : ["paper", "spock"], "paper" : ["scissors", "lizard"], "scissors" : ["rock", "spock"], "lizard" : ["scissors", "rock"], "spock" : ["lizard", "paper"]}
+        return self.RPSLS
     elif choice == "CUSTOM\n" or choice == "CUSTOM":
         return self.modeZone("hi", "custom", "hi")
     else:
