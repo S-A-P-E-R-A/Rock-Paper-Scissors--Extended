@@ -15,7 +15,7 @@ class Game():
       self.totalRounds = 0
       self.poke = False
       self.pastGame = False
-
+      self.dynamic = False
       self.pin = 0
       self.dynamics = {}
       self.mode = "none"
