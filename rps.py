@@ -15,8 +15,9 @@ class Game():
       self.totalRounds = 0
       self.poke = False
       self.pastGame = False
-      self.chance = True
+
       self.pin = 0
+      self.dynamics = {}
       self.mode = "none"
       self.player = Player("MegaMind", 0, 0)
       self.opponent = Opp("Haltmann", 0, 400)
@@ -48,33 +49,20 @@ class Game():
       self.RPSLS = ["rock", "paper", "scissors", "lizard", "spock"] #ADDITION
 
       self.pokemon = ["fire", "water", "electricity", "grass", "dragon", "fairy", "rock", "ground", "ice", "steel", "dark", "ghost", "fighting", "bug", "flying", "poison", "psychic"]
+      
   def pokeCheck(self, player, robo):
-      fire = ["water"]
-      water = ["grass", "electricity", "poison"]
-      electricity = ["ground"]
-      grass = ["steel", "fire", "ice", "poison", "bug"]
-      dragon = ["ice", "steel", "fairy", "dragon"]
-      fairy = ["ghost", "fighting", "steel"]
-      rock = ["water", "fighting", "ground", "steel"]
-      ground = ["flying", "water", "grass", "ice"]
-      ice = ["fire", "rock", "steel"]
-      steel = ["electricity", "poison", "fighting"]
-      dark = ["fighting", "bug", "fairy"]
-      ghost = ["dark", "ghost"]
-      fighting = ["fairy", "psychic", "flying"]
-      bug = ["rock", "flying", "fire"]
-      flying = ["rock", "ice", "electricity"]
-      poison = ["ground", "psychic"]
-      psychic = ["dark", "ghost", "bug"]
-
-      if player in eval(robo):
-          return 1
-      elif robo in eval(player):
-          return -1
-      else:
-        print(f"Fool! Between {player} and {robo}, there is no winner, they are objectivly and completly equal! Choose better!")
-        return 0
-
+    try:
+        if player in self.dynamics[robo]:
+            return 1
+        elif robo in self.dynamics[player]:
+            return -1
+        else:
+          print(f"Fool! Between {player} and {robo}, there is no winner, they are objectivly and completly equal! Choose better!")
+          return 0
+    except Exception as e:
+        print("ERROWER ERREOR")
+        print(e)
+        exit()
 
   def getMode(self, choice):
     choice = str.upper(choice)
@@ -89,7 +77,8 @@ class Game():
     elif choice == "NORMAL\n" or choice == "NORMAL":
         return self.norm
     elif choice == "POKEMON\n" or choice == "POKEMON":
-        self.poke = True
+        self.dynamic = True
+        self.dynamics = {"fire" : ["water"], "water" : ["grass", "electricity", "poison"], "electricity" : ["ground"], "grass" : ["steel", "fire", "ice", "poison", "bug"], "dragon" : ["ice", "steel", "fairy", "dragon"], "fairy" : ["ghost", "fighting", "steel"], "rock" : ["water", "fighting", "ground", "steel"], "ground" : ["flying", "water", "grass", "ice"], "ice" : ["fire", "rock", "steel"], "steel" : ["electricity", "poison", "fighting"], "dark" : ["fighting", "bug", "fairy"], "ghost" : ["dark", "ghost"], "fighting" : ["fairy", "psychic", "flying"], "bug" : ["rock", "flying", "fire"], "flying" : ["rock", "ice", "electricity"], "poison" : ["ground", "psychic"], "psychic" : ["dark", "ghost", "bug"]}
         return self.pokemon
     elif choice == "LEVEL TWO ROCK PAPER SCISSORS" or choice == "LEVEL TWO ROCK PAPER SCISSORS\n": #ADDITION
         self.dynamic = True
@@ -143,12 +132,7 @@ class Game():
 
   def createSave(self, save):
       x = 0
-      pin = []
       while True:
-         if x < 6 and not self.pastGame:
-             pin.append(random.randint(0, 9))
-             x += 1
-             continue
          try:
              file = open("saveFile.txt", "a")
              break
@@ -161,7 +145,7 @@ class Game():
              print("You do not have permission, get it in the terminal.\n Simply put 'cd ~'")
              exit()
       save["comments"] = self.commentList   
-      file.write(f"\n\n{pin}")
+      file.write("\n\n")
       for i in save:
           file.write(f"\n{save[i]}")
       file.write("\n~~~~~~~~~~")
@@ -177,7 +161,7 @@ class Game():
           P2 = False
           self.establishCommentList = ast.literal_eval(saveList[6])
           roundReset = False
-          save = {"name" : saveList[1], "Quacks" : int(saveList[2]), "goalQuacks" : int(saveList[3]), "bets" : saveList[4], "choices" : saveList[5], "comments" : saveList[6], "RoboName" : saveList[7], "RoboQuacks" : int(saveList[8]), "RoboGoalQuacks" : int(saveList[9]), "RoboBets" : saveList[10], "RoboChoices" : saveList[11], "totalRounds" : saveList[12], "mode" : saveList[13], "roundsPlayed" : int(saveList[14])}
+          save = {"pin" : saveList[0], "name" : saveList[1], "Quacks" : int(saveList[2]), "goalQuacks" : int(saveList[3]), "bets" : saveList[4], "choices" : saveList[5], "comments" : saveList[6], "RoboName" : saveList[7], "RoboQuacks" : int(saveList[8]), "RoboGoalQuacks" : int(saveList[9]), "RoboBets" : saveList[10], "RoboChoices" : saveList[11], "totalRounds" : saveList[12], "mode" : saveList[13], "roundsPlayed" : int(saveList[14])}
           print("\n\n")
           self.pics.globalSave = save
           pTwo = input("Would you like to do 2 player mode?\n\t")
@@ -221,6 +205,7 @@ class Game():
               Ring[mode[i]] = i
 
             self.color("green")
+            
             print("\n")
             self.update(save['roundsPlayed'], save["Quacks"], save["RoboQuacks"], bet, choice, oBet, robo)
 
@@ -235,6 +220,8 @@ class Game():
             time.sleep(1)
             print("\n\n")
             self.color("blue","u")
+            while save['Quacks'] % 5 != 0:
+                save['Quacks'] += 1
             print(f"Round {save['roundsPlayed']}\nYour Quacks: {save['Quacks']}\n{save['RoboName']}'s Quacks: {save['RoboQuacks']}\nYour Goal: {save['goalQuacks']}\n{save['RoboName']}'s Goal: {save['RoboGoalQuacks']}")
             print(f"It looks like you have been playing for {save['roundsPlayed']} round(s), you have {int(self.totalRounds) - save['roundsPlayed']} round(s) left")
             time.sleep(3)
@@ -353,8 +340,8 @@ class Game():
                     save['roundsPlayed'] -= 1
                     roundReset= True
                     continue
-                print("REMEMBER PLAYER 1, YOU ARE PICKING THE OPTIONS THAT PLAYER 2 MUST BEAT.")
-                time.sleep(2)
+                print("REMEMBER PLAYER 1, YOU ARE PICKING THE OPTIONS THAT PLAYER 2 MUST BEAT.\nTHE APPONENT PAY ALSO LOOK AWAY IF THEY DESIRE A GUESSING CHALLANGE")
+                time.sleep(3)
 
             save["Quacks"] -= bet
             save["RoboQuacks"] -= oBet
@@ -373,16 +360,16 @@ class Game():
             self.color("blue", "b")
             choice = self.pics.pick
             if P2:
+                print("Player Two Now!")
                 time.sleep(2)
                 random_options = random.sample(list(Ring.keys()), len(Ring))
                 self.pics.addMenu(random_options)
                 robo = self.pics.pick
             time.sleep(2)
             winn = 55
-            if self.poke:
+            if self.dynamic:
                 winn = self.pokeCheck(str.lower(choice), robo)
                 choice = robo
-                print("HI")
             if str.lower(choice) not in Ring:
               self.color("red", "b")
 
@@ -394,7 +381,6 @@ class Game():
               time.sleep(2)
               roundReset= True
               continue
-            print(winn)
             if (Ring[str.lower(choice)] - Ring[robo] == -1) or (Ring[str.lower(choice)] - Ring[robo] == len(Ring) - 1) or (winn == 1):
               self.color("green", "i")
               print(
@@ -440,6 +426,7 @@ class Game():
               time.sleep(3)
               endgame = "Bankruptcy" # says they went bankrupt - IS A SHORT DESCRIPTION
               self.creatEntry(save, endgame)
+              exit()
             elif (save['roundsPlayed'] > int(self.totalRounds) - 1):
                 print("You have ran out of time, you have lost") #says they ran out of time
                 endgame = "Ran out of Time" #says they ran out of time - IS A SHORT DESCRIPTION
@@ -505,12 +492,12 @@ class Game():
     save = []
     var = False
     with open('saveFile.txt', 'r') as file:
-        for i in file:
-            if pin == i:
+        for line in file:
+            if pin == line:
                 var = True
-            if i != "~~~~~~~~~~" and var:
-                save.append(i)
-            elif i == "~~~~~~~~~~":
+            if line != "~~~~~~~~~~" and var:
+                save.append(line.replace('\n', ''))
+            elif line == "~~~~~~~~~~":
                 break
     self.pastGame = True
     self.FunMode(save)
@@ -532,7 +519,6 @@ class Game():
       elif str.lower(choice) == "game info":
           print(self)
       elif str.lower(choice) == "save game":
-
           self.createSave(save)
       elif str.lower(choice) == "end game":
           self.endGame(save)
@@ -616,44 +602,89 @@ class Game():
   def establishCommentList(self, comments):
       self.commentList = comments
 
+  def dynamicMode(self):
+    pokemon = {}
+    nameList = []
+
+    while True:
+        pick = input("What item would you like to add?   (say 'DONE' when you are done)\n\t")
+        if pick == "DONE":
+            break
+        else:
+            nameList.append(pick)
+    print("Here is the full list of items: ", nameList)
+    
+    size = len(nameList)
+    var = 0
+    beatList = []
+    while True:
+        if var >= size:
+            break
+        beat = input(f"\nWhat is {nameList[var]} weak too?   (Enter 'NEXT' when you are done, and enter one at a time)\n\t")
+        if beat == "NEXT":
+            pokemon[nameList[var]] = beatList
+            beatList = []
+            var += 1
+            continue
+        elif beat not in nameList:
+            print("That is not in the list, try again")
+            continue
+        else:
+            beatList.append(beat)
+    self.dynamic = True
+    self.dynamics = pokemon
+    return nameList
+
   def customGame(self):
       custom = []
       print("Welcome to the custom game creator!")
       time.sleep(2)
-      print("You will be able to create your own game mode, and save it to a file!")
-      time.sleep(3)
-      print("WHEN TOLD, simply type in anything you want")
-      time.sleep(2)
-      print("Every subsequent input is inferior to the previous one, with the last input beating the first!")
-      time.sleep(3.2)
-      print("Simply type 'i am finished' when you are done\n")
-      time.sleep(1.7)
-      while True:
-           choice = input("What would you like to add?\n\t")
-           choice = str.lower(choice)
-           if str.lower(choice) == "i am finished":
-               break
-           elif choice in custom:
-               print("You already have that choice, dummy!")
-               time.sleep(2)
-               continue
-           elif choice == " " or choice == "":
-               print("You cannot have a blank choice, dingo!")
-               time.sleep(2)
-               continue
-           choice = choice.replace(" ", "_")
-           custom.append(choice)
-      print("\nDoes this look good?  'yes' or 'no'")
-      sep = " \nwhich is better than "
-      print(sep.join(custom))
-      x = input("\t")
-      if x == 'no':
-          print("Oops. Well Bye")
-          exit()
+      dyna = input("Would you like to make a linear mode or a dynamic mode?\n\t")
+      if str.lower(dyna) == "linear":
+          print("You will be able to create your own game mode, and save it to a file!")
+          time.sleep(3)
+          print("WHEN TOLD, simply type in anything you want")
+          time.sleep(2)
+          print("Every subsequent input is inferior to the previous one, with the last input beating the first!")
+          time.sleep(3.2)
+          print("Simply type 'i am finished' when you are done\n")
+          time.sleep(1.7)
+          while True:
+               choice = input("What would you like to add?\n\t")
+               choice = str.lower(choice)
+               if str.lower(choice) == "i am finished":
+                   break
+               elif choice in custom:
+                   print("You already have that choice, dummy!")
+                   time.sleep(2)
+                   continue
+               elif choice == " " or choice == "":
+                   print("You cannot have a blank choice, dingo!")
+                   time.sleep(2)
+                   continue
+               choice = choice.replace(" ", "_")
+          custom.append(choice)
+          print("\nDoes this look good?  'yes' or 'no'")
+          sep = " \nwhich is better than "
+          print(sep.join(custom))
+          x = input("\t")
+          if x == 'no':
+              print("Oops. Well Bye")
+              exit()
+      elif str.lower(dyna) == "dynamic":
+        custom = self.dynamicMode()
       else:
-          nam = input("\nWhats its name?\n\t")
-          nam = str.lower(nam)
-          self.modeZone(custom, "push", nam)
+        print("Typo perhaps ")
+        exit()
+      while True:
+         nam = input("\nWhats its name?\n\t")
+         nam = str.lower(nam)
+         if nam == "pokemon" or nam == "normal" or nam == "cars" or nam == "nintendo" or nam == "comic" or nam == "bait":
+           print("INVALID NAME")
+           continue
+         break
+
+      self.modeZone(custom, "push", nam)
 
 
   def modeZone(self, mode, what, name):
@@ -674,8 +705,11 @@ class Game():
       elif what == "push":
          sep = " "
          custom = sep.join(mode)
-         file.write(f"\n\n{name}\n")
+         file.write(f"\n{name}\n")
          file.write(f"{custom}")
+         file.write("\n")
+         file.write(f"{self.dynamics}")
+         file.write("\n")
          print("Mode added")
          return
       elif what == "custom":
@@ -698,13 +732,20 @@ class Game():
              return self.getMode(choice)
          else:
               var = False
+              dyna = False
               with open('modes.txt', 'r') as file:
                   for i in file:
                       if choice == i.strip():
                           var = True
                       elif var:
                           string = i
-                          break
+                          var = False
+                          dyna = True
+                          print("PENDING")
+                      elif dyna:
+                        self.dynamics = eval(i)
+                        print("GAME FOUND")
+                        break
                   else:
                       print(f"Mode {choice} not found.")
                       exit()
@@ -819,7 +860,7 @@ class Pics:
     # Source - https://stackoverflow.com/a/49749331
     # Posted by Miriam, modified by community. See post 'Timeline' for change history
     # Retrieved 2026-02-25, License - CC BY-SA 4.0
-    
+
     def clear(self):
         try:
             self.window.destroy()
@@ -907,7 +948,7 @@ class Pics:
     def modePicked(self, name):
         self.clear()
         self.MODENAME = name 
-    
+
     def getTheMode(self):
         return self.MODENAME
     def add(self):
@@ -1112,9 +1153,9 @@ else:
 endgame = "Unknown"
 
 RoboNames = [
-      "Megatron", "R2D2", "C3PO", "Wall-E", "Spongebob", "10101010010",
-      "001101110010101", "Optamous Prime", "Bumblebee", "Megatron", "Megatron",
-      "Megatron", "Megatron", "Megatron", "BB8", "T-800", "T-1000", "Ultron", "Baymax", "JARVIS", "RoboCop", "Iron Giant", "Vision", "MegaMan"
+      "Megatron", "R2D2", "C3PO", "Wall-E", "Spongebob", "01001010 01101111 01100101 01111001",
+      "01100010 01101111 01100010", "Optamous Prime", "Bumblebee", "Megatron", "Megatron",
+      "Megatron", "Megatron", "Megatron", "BB8", "T-800", "T-1000", "Ultron", "Baymax", "JARVIS", "RoboCop", "Iron Giant", "Vision", "MegaMan", "Star Dream", "Galactic Nova", "Robo Dedede", "i-robot", "Cirrus", "The Thunderhead"
   ]#Names for the computer
 
 x = 350
@@ -1144,7 +1185,7 @@ game.color("blue")
 time.sleep(1.6)
 print("\n\nNow, the amount you choose will determine how many rounds you play, good luck.\nPlease insert your Quack Goal (You start with 100 Quacks)\n(QUACKS = POINTS):\n\t")
 time.sleep(2.7)
-goalQuacks = pac.doPoints(300)
+goalQuacks = pac.doPoints(400)
 game.color("yellow","u")
 if goalQuacks <= 0:
     print(
@@ -1170,7 +1211,7 @@ PlayerSettings = {
     "TotalRounds": rounds,
     "name": Name
 }
-time.sleep(1.3)
+time.sleep(0.3)
 print("\n")
 game.color("green","b")
 xxx = str(input("What is your catchphrase?\n\t"))
@@ -1183,8 +1224,11 @@ bets = []
 choices = []
 RoboBets = []
 RoboChoices = []
-
-save = ["000000"]
+pin = []
+for i in range(6):
+    pin.append(random.randint(0, 9))
+save = []
+save.append(pin)
 save.append(PlayerSettings["name"])
 save.append(PlayerSettings["Quacks"])
 save.append(PlayerSettings["GoalQuacks"])
@@ -1199,4 +1243,5 @@ save.append(str(RoboChoices))
 save.append(PlayerSettings["TotalRounds"])
 save.append(str(gameMode))
 save.append("0")
+save.append(False)
 game.FunMode(save)
