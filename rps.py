@@ -14,11 +14,11 @@ class Game():
       self.commentList = []
       self.totalRounds = 0
 
-      self.gameList = [["NORMAL", "CARS", "COMIC", "NINTENDO", "BAIT", "POKEMON", "BIG BANG", "RPS-7", "RPS-9", "RPS-11", "RPS-15", "CUSTOM"]]
+      self.gameList = ["NORMAL", "CARS", "COMIC", "NINTENDO", "BAIT", "POKEMON", "BIG BANG", "RPS-7", "RPS-9", "RPS-11", "RPS-15", "RPS-25", "RPS-101", "CUSTOM"]
 
       self.poke = False
       self.chance = True
-      self.pastGame = False
+      self.pastGame = False 
       self.dynamic = False
       self.pin = 0
       self.dynamics = {}
@@ -52,18 +52,34 @@ class Game():
 
       self.RPSLS = ["rock", "paper", "scissors", "lizard", "spock"] #ADDITION
 
+      self.pokemon = ["fire", "water", "electricity", "grass", "dragon", "fairy", "rock", "ground", "ice", "steel", "dark", "ghost", "fighting", "bug", "flying", "poison", "psychic"]
+
 #Special thanks to David C. Lovelace on https://www.umop.com/rps.htm for deciding the dynamic game connections as seen below
 
       self.RPS7 = ["rock", "fire", "scissors", "sponge", "paper", "air", "water"]
 
-      self.RPS9 = ["rock", "fire", "scissors", "sponge", "paper", "air", "water", "gun", "human"]
+      self.RPS9 = ["rock", "fire", "scissors", "human", "sponge", "paper", "air", "water", "gun"]
       
-      self.RPS11 = ["rock", "fire", "scissors", "sponge", "paper", "air", "water", "gun", "human", "devil", "wolf"]
+      self.RPS11 = ["rock", "fire", "scissors", "human", "wolf", "sponge", "paper", "air", "water", "devil", "gun"]
 
-      self.RPS15 = ["rock", "fire", "scissors", "sponge", "paper", "air", "water", "gun", "human", "devil", "wolf", "lightning", "snake", "dragon", "tree"]
+      self.RPS15 = ["rock", "fire", "scissors", "snake", "human", "tree", "wolf", "sponge", "paper", "air", "water", "dragon", "devil", "lightning", "gun"]
 
-      self.pokemon = ["fire", "water", "electricity", "grass", "dragon", "fairy", "rock", "ground", "ice", "steel", "dark", "ghost", "fighting", "bug", "flying", "poison", "psychic"]
       
+      self.RPS25 = ["rock", "sun", "fire", "scissors", "axe", "snake", "monkey", "woman", "man", "tree", "cockroach", "wolf", "sponge", "paper", "moon", "air", "bowl", "water", "spock", "dragon", "devil", "lightning", "nuke", "dynamite", "gun"]
+
+      self.RPS101 = ["dynamite", "tornado", "quicksand", "pit", "chain", "gun", "law", "whip", "sword",
+    "rock", "death", "wall", "sun", "camera", "fire", "chainsaw", "school", "scissors",
+    "poison", "cage", "axe", "peace", "computer", "castle", "snake", "blood",
+    "porcupine", "vulture", "monkey", "king", "queen", "prince", "princess", "police",
+    "woman", "baby", "man", "home", "train", "car", "noise", "bicycle", "tree",
+    "turnip", "duck", "wolf", "cat", "bird", "fish", "spider", "cockroach", "brain",
+    "community", "cross", "money", "vampire", "sponge", "church", "butter", "book",
+    "paper", "cloud", "airplane", "moon", "grass", "film", "toilet", "air", "planet",
+    "guitar", "bowl", "cup", "beer", "rain", "water", "tv", "rainbow", "ufo", "spock",
+    "prayer", "mountain", "satan", "dragon", "diamond", "platinum", "gold", "devil",
+    "fence", "video game", "math", "robot", "heart", "electricity", "lightning",
+    "medusa", "power", "laser", "nuke", "sky", "tank", "helicopter"
+]
   def pokeCheck(self, player, robo):
     try:
         if player in self.dynamics[robo]:
@@ -77,6 +93,17 @@ class Game():
         print("ERROWER ERREOR")
         print(e)
         exit()
+
+  def rpsDictionary(self, items):
+    size = len(items)
+    numLosses = int(len(items) / 2) # Each item loses to 50 items
+    theDictionary = {}
+    for i, move in enumerate(items):
+        # Finds the 50 items preceding the current move, wrapping around
+        losers = [items[(i - j) % size] for j in range(1, numLosses + 1)]
+        theDictionary[move] = losers
+    return theDictionary
+
 
   def getMode(self, choice):
     choice = str.upper(choice)
@@ -100,20 +127,29 @@ class Game():
         return self.RPSLS
     elif choice == "RPS-7":
         self.dynamic = True
-        self.dynamics = {"rock" : ["water", "air", "paper"], "fire" : ["air", "rock", "water"], "scissors" : ["water", "fire", "rock"], "sponge" : ["scissors", "fire", "rock"], "paper" : ["sponge", "scissors", "fire"], "air" : ["paper", "sponge", "scissors"], "water" : ["paper", "sponge", "air"]}
+        self.dynamics = self.rpsDictionary(self.RPS7)
         return self.RPS7
     elif choice == "RPS-9":
         self.dynamic = True
-        self.dynamics = {"rock" : ["water", "air", "paper", "gun"], "fire" : ["air", "rock", "water", "gun"], "scissors" : ["water", "fire", "rock", "gun"], "sponge" : ["scissors", "fire", "rock", "human"], "paper" : ["sponge", "scissors", "fire", "human"], "air" : ["paper", "sponge", "scissors", "human"], "water" : ["paper", "sponge", "air", "human"], "human" : ["scissors", "fire", "rock", "gun"], "gun" : ["water", "air", "paper", "sponge"]}
+        self.dynamics = self.rpsDictionary(self.RPS9)
         return self.RPS9
     elif choice == "RPS-11":
         self.dynamic = True
-        self.dynamics = {"rock" : ["water", "air", "paper", "gun", "devil"], "fire" : ["air", "rock", "water", "gun", "devil"], "scissors" : ["water", "fire", "rock", "gun", "devil"], "sponge" : ["scissors", "fire", "rock", "human", "wolf"], "paper" : ["sponge", "scissors", "fire", "human", "wolf"], "air" : ["paper", "sponge", "scissors", "human", "wolf"], "water" : ["paper", "sponge", "air", "human", "wolf"], "human" : ["scissors", "fire", "rock", "gun", "devil"], "gun" : ["water", "air", "paper", "sponge"], "wolf" : ["human", "scissors", "fire", "rock", "gun"], "devil" : ["water", "air", "paper", "sponge", "wolf"]}
+        self.dynamics = self.rpsDictionary(self.RPS11)
         return self.RPS11
     elif choice == "RPS-15":
         self.dynamic = True
-        self.dynamics = {"rock" : ["water", "air", "paper", "gun", "devil", "dragon", "lightning"], "fire" : ["air", "rock", "water", "gun", "devil", "dragon", "lightning"], "scissors" : ["water", "fire", "rock", "gun", "devil", "dragon", "lightning"], "sponge" : ["scissors", "fire", "rock", "human", "wolf", "snake", "tree"], "paper" : ["sponge", "scissors", "fire", "human", "wolf", "snake", "tree"], "air" : ["paper", "sponge", "scissors", "human", "wolf", "snake", "tree"], "water" : ["paper", "sponge", "air", "human", "wolf", "snake", "tree"], "human" : ["scissors", "fire", "rock", "gun", "devil", "snake", "lightning"], "gun" : ["water", "air", "paper", "sponge", "dragon", "lightning"], "wolf" : ["human", "scissors", "fire", "rock", "gun", "snake", "tree"], "devil" : ["water", "air", "paper", "sponge", "wolf", "tree", "dragon"], "snake" : ["scissors", "fire", "rock", "gun", "lightning", "devil", "dragon"], "tree" : ["scissors", "fire", "rock", "gun", "lightning", "snake", "human"], "lightning" : ["wolf", "sponge", "paper", "air", "water", "dragon", "devil"], "dragon" : ["wolf", "sponge", "paper", "air", "water", "tree", "human"]}
+        self.dynamics = self.rpsDictionary(self.RPS15)
         return self.RPS15
+    elif choice == "RPS-25":
+        self.dynamic = True
+        self.dynamics = self.rpsDictionary(self.RPS25)
+        return self.RPS25
+    elif choice == "RPS-101":
+        self.pics.big = True
+        self.dynamic = True
+        self.dynamics = self.rpsDictionary(self.RPS101)
+        return self.RPS101
     elif choice == "CUSTOM\n" or choice == "CUSTOM":
         return self.modeZone("hi", "custom", "hi")
     else:
@@ -400,6 +436,11 @@ class Game():
                 robo = self.pics.pick
             time.sleep(2)
             winn = 55
+            if self.pics.pick == "menu openned":
+                save["Quacks"] += bet
+                save["RoboQuacks"] += oBet
+                save['roundsPlayed'] -= 1
+                continue
             if self.dynamic:
                 winn = self.pokeCheck(str.lower(choice), robo)
             if str.lower(choice) not in Ring:
@@ -418,6 +459,8 @@ class Game():
               print(
                   "Wow, wow, wow, it looks like we have a lucky duck. Congrats on winning the round!"
               )
+              time.sleep(2)
+              print(random.choice(self.commentList))
               save["Quacks"] += (bet * 2) + oBet
               time.sleep(3)
               continue
@@ -443,9 +486,6 @@ class Game():
                 if P2:
                     print(f"You too {save['RoboName']}!")
                     save["RoboQuacks"] -= round(oBet / 10)
-                else:
-                    self.color("red", "b")
-                    self.opponent.insult(save["name"], choice, robo)
                 time.sleep(3)
                 continue
           else:
@@ -758,6 +798,7 @@ class Pics:
     def __init__(self):
         self.pick = "None"
         self.points = 0
+        self.big = False
         self.MODENAME = "NORMAL"
         self.gam = None
         self.globalSave = []
@@ -880,6 +921,7 @@ class Pics:
             return
     def menu(self):
         self.clear()
+        self.pick = "Menu Openned"
         nameList = ['stats', 'past games', 'opponent info', 'comment', 'game info', 'all information', 'save game', 'end game']   #YUHTYGHBJFGYKFutuerhnrurjkrfhrirnrirbnrurjnrirnrorjroj
         xcord = 35
         ycord = 110
@@ -922,8 +964,8 @@ class Pics:
     def setGame(self, game):
         self.gam = game
 
-    def doPick(self, ):
-        nameList = ["NORMAL", "CARS", "COMIC", "NINTENDO", "BAIT", "POKEMON", "BIG BANG", "RPS-7", "RPS-9", "RPS-11", "RPS-15", "CUSTOM"]
+    def doPick(self):
+        nameList = ["NORMAL", "CARS", "COMIC", "NINTENDO", "BAIT", "POKEMON", "BIG BANG", "RPS-7", "RPS-9", "RPS-11", "RPS-15", "RPS-25", "RPS-101", "CUSTOM"]
         xcord = 0
         ycord = 90
         self.window = finn.Tk()
@@ -1020,7 +1062,7 @@ class Pics:
         return(self.points)
 
     def addMenu(self, nameList):
-        xcord = 10
+        xcord = 5
         ycord = 0
         self.window = finn.Tk()
         self.window.geometry("3000x3000")
@@ -1031,6 +1073,8 @@ class Pics:
         #Bimmage = Bimmage.subsample(4, 4)
         pill = Image.open(io.BytesIO(base64.b64decode(self.pics["menu"])))
         pill = pill.resize((185, 185))
+        if self.big:
+            pill = pill.resize((100, 100))
         Bimmage = ImageTk.PhotoImage(pill)
         Bimmages.append(Bimmage)
         DoneBimmage = ttk.Button(self.window, image=Bimmage, command=lambda :self.menu())
@@ -1044,6 +1088,8 @@ class Pics:
                 name = str(random.randint(1, 30))#CHANGE
             pill = Image.open(io.BytesIO(base64.b64decode(self.pics[name])))
             pill = pill.resize((185, 185))
+            if self.big:
+                pill = pill.resize((100, 100))
             #Bimmage =finn.PhotoImage(data=self.pics[name])
             #Bimmage = Bimmage.resize(100, 100)
             #Bimmage = Bimmage.subsample(3, 3)
@@ -1056,12 +1102,20 @@ class Pics:
             BimmageHolder.append(DoneBimmage)
             NameHolder.append(BimmageName)
         for i in range(len(BimmageHolder)):
-            if xcord >= 1300:
+            if xcord >= 1500 and self.big:
+                xcord = 5
+                ycord += 100
+            elif xcord >= 1300 and not self.big:
                 xcord = 10
                 ycord += 200
-            BimmageHolder[i].place(x=xcord + 40, y=ycord)
-            NameHolder[i].place(x=xcord + 45, y=ycord + 5) 
-            xcord += 200
+            if self.big:
+                BimmageHolder[i].place(x=xcord, y=ycord)
+                NameHolder[i].place(x=xcord + 5, y=ycord + 5) 
+                xcord += 100
+            else:
+                BimmageHolder[i].place(x=xcord + 40, y=ycord)
+                NameHolder[i].place(x=xcord + 45, y=ycord + 5) 
+                xcord += 200
         self.window.mainloop()  
 
     def choice(self, name):
