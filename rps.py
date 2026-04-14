@@ -63,7 +63,6 @@ class Game():
       self.RPS11 = ["rock", "fire", "scissors", "human", "wolf", "sponge", "paper", "air", "water", "devil", "gun"]
 
       self.RPS15 = ["rock", "fire", "scissors", "snake", "human", "tree", "wolf", "sponge", "paper", "air", "water", "dragon", "devil", "lightning", "gun"]
-
       
       self.RPS25 = ["rock", "sun", "fire", "scissors", "axe", "snake", "monkey", "woman", "man", "tree", "cockroach", "wolf", "sponge", "paper", "moon", "air", "bowl", "water", "spock", "dragon", "devil", "lightning", "nuke", "dynamite", "gun"]
 
@@ -499,7 +498,7 @@ class Game():
               endgame = "Bankruptcy" # says they went bankrupt - IS A SHORT DESCRIPTION
               self.creatEntry(save, endgame)
               exit()
-            elif (save['roundsPlayed'] > int(self.totalRounds) - 1):
+            elif (save['roundsPlayed'] >= int(self.totalRounds) - 1):
                 print("You have ran out of time, you have lost") #says they ran out of time
                 endgame = "Ran out of Time" #says they ran out of time - IS A SHORT DESCRIPTION
                 self.creatEntry(save, endgame)
@@ -1265,7 +1264,7 @@ while goalQuacks < 300:
     time.sleep(4)
     goalQuacks = round(goalQuacks * 3.5)  #Multiplies the goal Quacks by 3
     time.sleep(2)
-rounds = round((goalQuacks / 100) * 1.8)
+rounds = round((goalQuacks / 100) * 1.4)
 Name = input("Now, what is your name?\t")
 
 
