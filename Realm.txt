@@ -1,0 +1,87 @@
+
+
+Player: Jpey
+Opponent: Wall-E
+Means of end: Jpey reached their goal
+Jpey got 470 Quacks out of 370
+Jpey chose: ['paper', 'scissors']
+Jpey bet: [95, 195]
+Wall-E got 23 Quacks out of 457
+Wall-E chose: ['paper', 'scissors']
+Wall-E bet: [47, 30]
+Rounds played: 2
+Game Mode: BIG BANG
+Comment 1: 
+	JOEY NOT JPEY
+
+Player: 777
+Opponent: Ultron
+Means of end: quit
+777 got 140 Quacks out of 400
+777 chose: ['fire', 'paper', 'paper', 'paper']
+777 bet: [25, 80, 80, 15]
+Ultron got 14 Quacks out of 447
+Ultron chose: ['fire', 'paper', 'paper', 'paper']
+Ultron bet: [60, 23, 23, 36]
+Rounds played: 5
+Game Mode: RPS-7
+
+Player: John
+Opponent: Galactic Nova
+Means of end: quit
+John got 130 Quacks out of 400
+John chose: ['scissors', 'water']
+John bet: [5, 10]
+Galactic Nova got 45 Quacks out of 446
+Galactic Nova chose: ['paper', 'paper']
+Galactic Nova bet: [48, 26]
+Rounds played: 3
+Game Mode: RPS-7
+Comment 1: 
+	JOJOJOJOJO
+
+Player: JOJOJO
+Opponent: Star Dream
+Means of end: quit
+JOJOJO got 165 Quacks out of 400
+JOJOJO chose: ['wolf']
+JOJOJO bet: [20]
+Star Dream got 27 Quacks out of 449
+Star Dream chose: ['water']
+Star Dream bet: [50]
+Rounds played: 2
+Game Mode: RPS-15
+Comment 1: 
+	MOMO
+
+Player: chris
+Opponent: Optamous Prime
+Means of end: chris reached their goal
+chris got 1079 Quacks out of 650
+chris chose: ['king', 'gun', 'water', 'water']
+chris bet: [55, 115, 240, 470]
+Optamous Prime got 3 Quacks out of 446
+Optamous Prime chose: ['church', 'sword', 'fire', 'peace']
+Optamous Prime bet: [59, 20, 14, 4]
+Rounds played: 4
+Game Mode: RPS-101
+Comment 1: 
+	hi
+Comment 2: 
+	i am human
+Comment 3: 
+	hi
+
+Player: winner
+Opponent: T-1000
+Means of end: winner reached their goal
+winner got 621 Quacks out of 510
+winner chose: ['dynamite', 'dynamite', 'gun', 'pit', 'nuke', 'woman', 'man']
+winner bet: [50, 90, 50, 90, 10, 90, 140]
+T-1000 got 82 Quacks out of 463
+T-1000 chose: ['community', 'train', 'school', 'quicksand', 'fish', 'guitar', 'moon']
+T-1000 bet: [52, 88, 99, 51, 117, 193, 96]
+Rounds played: 6
+Game Mode: RPS-101
+Comment 1: 
+	you won't win

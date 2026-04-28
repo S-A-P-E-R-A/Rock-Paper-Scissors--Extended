@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RPS--Extended</title>
+</head>
+<body>
+    <a href="/">Return to Home</a>
+      <form method="POST" action="/app">
+        <input type="hidden" name="mode" value="{{mode}}"> /* Thanks to Claud for help*/
+        <div>
+        {% for name in mode %}
+                <button type="submit" name="attack" value="{{name}}">{{name}}</button>
+            {% endfor %}
+        </div>
+    </form>
+</body>
+</html>

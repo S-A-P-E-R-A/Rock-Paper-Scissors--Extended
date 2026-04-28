@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RPSHome</title>
+</head>
+<body>
+    <h1>Welcome to Rock Paper Scissors -- <em>Extended</em>!</h1>
+    <form method=["POST"] action="/play">
+        <button type="submit" name="play" value="game.runSavedGame">Continue</button>
+        <button type="submit" name="play" value="game.newGame">New Game!</button>
+        <button type="submit" name="play" value="game.customGame">Game Creator</button>
+        <button name="P2" value="not ">2 Player:</button>
+        <button name="chance" value="player2">Chance Mode:</button>
+
+    </form>
+</body>
+</html>

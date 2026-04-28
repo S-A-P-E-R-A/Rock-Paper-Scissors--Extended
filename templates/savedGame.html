@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Save File</title>
+</head>
+<body>
+    <a href="/">Return to Home</a>
+    <h1>Saved Games</h1>
+    <pre> {{content}}</pre><br><br>
+    <form action="/app" method="POST">
+        <label for="pin">PIN:</label>
+        <input type="text" id="pin" name="play", placeholder="[1, 3, 5, 7, 9, 2]", pattern="\[[0-9], [0-9], [0-9], [0-9], [0-9], [0-9]\]", title="The pin - found at the top of a game - must include [] and commas"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RPS Home</title>
+    <style>
+        .menuChoices {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh;
+        }
+        .choiceButton {
+            margin: 10px;
+        }
+        .starterChoices {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh;
+            background-color: #A1FFEB;
+            border: 3px solid black;
+            position: relative;
+            transform: translate(5%, 5%);
+        }
+        .toggles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh;
+            background-color: #47ABFC;
+            border: 3px solid black;
+            border-radius: 10px;
+            position: relative
+        }
+        .titles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh
+        }
+    </style>
+</head>
+<body>
+    <div class="titles">
+    <h1>Welcome to Rock Paper Scissors -- <em>Extended</em>!</h1>
+    </div>
+    <form method="POST" action="/app">
+        <div class="starterChoices">
+            <button type="submit" name="play" value="game.runSavedGame">Continue</button>
+            <button type="submit" name="play" value="game.newGame">New Game!</button>
+            <button type="submit" name="play" value="game.customGame">Game Creator</button>
+        </div>
+        <div class="toggles">
+            <button type="submit" name="play" value="P2">2 Player: {{ P2 }}</button>
+            <button type="submit" name="play" value="chance">Chance Mode: {{ chance }}</button>
+        </div>
+    </form>
+</body>
+</html>
