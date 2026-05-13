@@ -7,6 +7,7 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 chance = False
 P2 = False
 THEMODE = None
+dynamic = False
 
 
 class Game():
@@ -524,53 +525,6 @@ class Game():
               #time.sleep(3)
               exit()
 
-  def runSavedGame(self):
-    try:
-        file = open("saveFile.txt", "r")
-    except FileNotFoundError:
-        file = open("saveFile.txt", "w")
-        file.write("SAVES")
-        file.close()
-        print("No saved games found")
-        #time.sleep(2)
-        return
-    except PermissionError:
-        print("You do not have permission, get it in the terminal.\n Simply put 'cd ~'")
-        exit()
-    print(file.read())
-    x = 0
-    while x < 3:
-        try:
-            pin = input("\nEnter the pin for the game\t(The Pin is found at the top of a game and include [] and ,)\n\t - ")
-            pin = pin + "\n"
-            with open('saveFile.txt', 'r') as file:
-                for i in file:
-                    if pin == i:
-                        break
-                else:
-                    print(f"Game {pin} not found.")
-                    x += 1
-                    continue
-                break
-        except ValueError:
-            print("Invalid input. Please enter a valid integer.")
-            continue
-    else:
-        print("Exiting Code...")
-        exit()
-    save = []
-    var = False
-    with open('saveFile.txt', 'r') as file:
-        for line in file:
-            if pin == line:
-                var = True
-            if line != "~~~~~~~~~~" and var:
-                save.append(line.replace('\n', ''))
-            elif line == "~~~~~~~~~~":
-                break
-    self.pastGame = True
-    self.FunMode(save)
-
   def menu(self, save, action):
       #self.color("yellow", "i")
       choice = action
@@ -740,7 +694,15 @@ def checkSave(pin):
             return read_file()
         return True
 
-
+def rpsDictionary(items):
+  size = len(items)
+  numLosses = int(len(items) / 2) # Each item loses to 50 items
+  theDictionary = {}
+  for i, move in enumerate(items):
+      # Finds the 50 items preceding the current move, wrapping around
+      losers = [items[(i - j) % size] for j in range(1, numLosses + 1)]
+      theDictionary[move] = losers
+  return theDictionary
 
 @APP.route("/app", methods=["POST"])
 def app():
@@ -748,19 +710,58 @@ def app():
     attack_choice = request.form.get("attack")
     global mode
     mode = request.form.get("mode")
+    winn = 5
     if mode:
         global THEMODE
         THEMODE = (mode)
     if attack_choice:
-
-
-
-
-
+        Ring = {}
+        for i in range(len(mode)):
+            Ring[mode[i]] = i
+        computer = random.choice(eval(mode))
+        if mode != "bait" and mode != "car" and mode != "nintendo" and mode != "comic" and mode != "norm":
+            dynamics = rpsDictionary(eval(mode))
+            if attack_choice in dynamics[computer]:
+                winn = 1
+            elif computer in dynamics[attack_choice]:
+                winn = -1
+            else:
+              winn = 0
+        if (Ring[str.lower(attack_choice)] - Ring[computer] == -1) or (Ring[str.lower(attack_choice)] - Ring[computer] == len(Ring) - 1) or (winn == 1):
+          self.color("green", "i")
+          print(
+                  "Wow, wow, wow, it looks like we have a lucky duck. Congrats on winning the round!"
+              )
+          save["Quacks"] += (bet * 2) + oBet
+          #time.sleep(3)
+          
+        elif (Ring[str.lower(attack_choice)] - Ring[computer] == 1) or (Ring[str.lower(attack_choice)] - Ring[computer] == -(len(Ring) - 1)) or (winn == -1):
+          self.color("red", "i")
+          print(
+                  f"Whoopsies, it looks like {save['name']} lost their winning streak, if they had one HAHA. We know how unlucky you are, try again…"
+              )  #Says that the player has lost
+          save["RoboQuacks"] += (oBet * 2) + bet
+          #time.sleep(3)
+          self.color("red", "b")
+          self.opponent.insult(save["name"], attack_choice, computer)
+          #time.sleep(3)
+          
+        else:
+            self.color("gray", "b")
+            print(f"Fool! Between {attack_choice} and {computer}, there is no winner, they are objectivly and completly equal! \nChoose better!")
+            save["Quacks"] += bet
+            save["RoboQuacks"] += oBet
+            #time.sleep(5)
+            save["Quacks"] -= round(bet / 10)
+            print("You have been penalized 10% of your bet for such foolishness")
+            if P2:
+                print(f"You too {save['RoboName']}!")
+                save["RoboQuacks"] -= round(oBet / 10)
+            #time.sleep(3)
+        return render_template("clash.html", P1 = attack_choice, P2 = computer)
 
         
-        computer = random.choice(eval(request.form.get("mode")))
-        return render_template("clash.html", P1 = attack_choice, P2 = computer)
+        
     if user_choice == "game.runSavedGame":
         return read_file()
     elif user_choice == "game.newGame":
@@ -784,8 +785,7 @@ def app():
                 elif (line == "~~~~~~~~~~" or line.strip() == "~~~~~~~~~~") and var:
                     break
         mode = eval(save[13])
-        try:
-            return render_template("mainGame.html", 
+        return render_template("mainGame.html", 
                                name=save[1], point=save[2], 
                                goalPoints=save[3], bets=save[4], 
                                picks=save[5], comments=save[6], 
@@ -794,8 +794,6 @@ def app():
                                roboPicks=save[11], totalRounds=save[12],
                                mode=mode,
                                currentRound=save[14])
-        except Exception as e:
-            return render_template("clash.html", P1 = user_choice, P2 = random.choice(mode))
     else:
         return render_template("FirstPage.html", P2 = P2, chance = user_choice)
 if __name__ == "__main__":

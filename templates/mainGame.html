@@ -4,6 +4,13 @@
     <title>RPS--Extended</title>
 </head>
 <body>
+    <p>Player 1: {{name}}, point: {{point}}s, goal: {{goalPoints}}, {{bets}}, 
+                               {{picks}}, {{comments}}, 
+                               {{roboName}}, {{roboPoints}}, 
+                               {{roboGoalPoints}}, {{roboBets}},
+                               {{roboPicks}}, {{totalRounds}},
+                               {{mode}},
+                               {{currentRound}}</p>
     <a href="/">Return to Home</a>
       <form method="POST" action="/app">
         <input type="hidden" name="mode" value="{{mode}}"> /* Thanks to Claud for help*/
@@ -11,6 +18,7 @@
         {% for name in mode %}
                 <button type="submit" name="attack" value="{{name}}">{{name}}</button>
             {% endfor %}
+            <button type="submit" name="reload" value="chance">Chance Mode: {{ chance }}</button>
         </div>
     </form>
 </body>
